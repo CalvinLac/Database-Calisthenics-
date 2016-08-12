@@ -1,0 +1,28 @@
+
+1) To find all the users that are located in California
+
+User.find_by_sql ["SELECT * FROM users JOIN states on (state_id = statHERE name= 'California';]
+
+2) To find all the airports that are located in the state of Minnesota
+
+Airport.find_by_sql ["SELECT * FROM airports JOIN states ON (state_id = states.id) WHERE name = 'Minnesota';"]
+
+3) SKIPPED 
+
+4) To find the price of all flights that originate from Calgary
+Flight.find_by_sql ["SELECT price FROM flights JOIN airports on (origin_id=airports.id) WHERE code = 'YYC';"]
+
+5) To find all the flights that connect to Calgary airport
+Flight.find_by_sql ["SELECT * FROM flights JOIN airports ON (origin_id=state_id) WHERE code = 'YYC';"]
+
+6) Find all the airports that Calvin visted 
+User.find_by_sql ["SELECT * FROM users JOIN flights ON (state_id=origin_id) WHERE first_name = 'Calvin';"]
+
+7) To find the most expensive flights that stem from Calgary
+Flight.find_by_sql ["SELECT * FROM flights JOIN airports ON (origin_id=state_id) WHERE code = 'YYC' ORDER BY price DESC;"]
+
+8) To find the shortest flight that 'Calvin' took
+Flight.find_by_sql ["SELECT distance, first_name FROM flights JOIN users ON (origin_id=state_id) WHERE first_name = 'Calvin';"]
+
+9 To find the average flight distance of planes that come and go from YYC airport
+Flight.find_by_sql ["SELECT AVG(distance) FROM flights JOIN airports ON (origin_id=state_id) WHERE code= 'GMO';"]
