@@ -26,3 +26,17 @@ Flight.find_by_sql ["SELECT distance, first_name FROM flights JOIN users ON (ori
 
 9 To find the average flight distance of planes that come and go from YYC airport
 Flight.find_by_sql ["SELECT AVG(distance) FROM flights JOIN airports ON (origin_id=state_id) WHERE code= 'GMO';"]
+
+10) To find the top 3 users that have spent the most money on flights
+User.find_by_sql ["Select username, sum(price) From users JOIN itineraries ON (users.id=user_id) JOIN tickets ON (itineraries.id=itinerary_id) JOIN flights ON (flight_id=flights.id) GROUP BY username;"]
+
+11) To find the maximum range of flights
+Flight.find_by_sql ["SELECT max(distance), min(distance) FROM flights;"]
+
+12) To find the most popular travel destination
+User.find_by_sql ["SELECT username, states.name FROM users JOIN itineraries ON (users.id=user_id) JOIN tickets ON (itineraries.id=itinerary_id) JOIN flights ON (flight_id=flights.id) JOIN states ON (destination_id=states.id) WHERE users.state_id = '51';"]
+
+13) Subqueries
+User.find_by_sql ["SELECT * FROM users WHERE itineraries.id IN (SELECT itineraries.id FROM itineraries WHERE itinerary_id IN (SELECT itinerary_id FROM tickets WHERE itinerary_id > 2));"]
+
+State.find_by_sql ["select name, count(name) from states where id in (select state_id from airports where id in (select destination_id from flights where origin_id in (select id from airports where state_id = (select id from states where name = 'Kansas')))) group by name"]
