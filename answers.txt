@@ -37,6 +37,10 @@ Flight.find_by_sql ["SELECT max(distance), min(distance) FROM flights;"]
 User.find_by_sql ["SELECT username, states.name FROM users JOIN itineraries ON (users.id=user_id) JOIN tickets ON (itineraries.id=itinerary_id) JOIN flights ON (flight_id=flights.id) JOIN states ON (destination_id=states.id) WHERE users.state_id = '51';"]
 
 13) Subqueries
-User.find_by_sql ["SELECT * FROM users WHERE itineraries.id IN (SELECT itineraries.id FROM itineraries WHERE itinerary_id IN (SELECT itinerary_id FROM tickets WHERE itinerary_id > 2));"]
+User.find_by_sql ["SELECT * FROM users WHERE id IN (SELECT flights.id FROM flights WHERE origin_id =150);"]
 
-State.find_by_sql ["select name, count(name) from states where id in (select state_id from airports where id in (select destination_id from flights where origin_id in (select id from airports where state_id = (select id from states where name = 'Kansas')))) group by name"]
+Kansas query
+State.find_by_sql ["SELECT name count(name) FROM states where id IN (SELECT state_id FROM airports WHERE id IN (SELECT destination_id FROM flights WHERE origin_id IN (SELECT id FROM airports WHERE state_id = (SELECT id FROM states WHERE name = 'Kansas')))) group by name;"]
+
+Find the person who has spent the most on a single flight that only has 1 itinerary
+User.find_by_sql ["SELECT username, flights.price FROM users JOIN itineraries ON users.id = itineraries.user_id JOIN tickets ON itineraries.id = tickets.itinerary_id JOIN flights ON tickets.flight_id = flights.id where users.id in (SELECT user_id FROM itineraries group by user_id) order by flights.price desc"]
