@@ -44,3 +44,6 @@ State.find_by_sql ["SELECT name count(name) FROM states where id IN (SELECT stat
 
 Find the person who has spent the most on a single flight that only has 1 itinerary
 User.find_by_sql ["SELECT username, flights.price FROM users JOIN itineraries ON users.id = itineraries.user_id JOIN tickets ON itineraries.id = tickets.itinerary_id JOIN flights ON tickets.flight_id = flights.id where users.id in (SELECT user_id FROM itineraries group by user_id) order by flights.price desc"]
+
+To find the average cost of a flight for users in a specific state(Not sure the syntax for the date)
+State.find_by_sql ["SELECT states.name, avg(flights.price) FROM states JOIN users ON (states.id=users.state_id) JOIN itineraries ON (users.id=itineraries.user_id) JOIN tickets ON (itineraries.id=tickets.itinerary_id) JOIN flights ON (tickets.flight_id=flights.id) GROUP BY states.name"]
